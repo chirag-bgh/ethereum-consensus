@@ -10,18 +10,24 @@ use std::{
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ByteVector<const N: usize>(#[serde(with = "crate::serde::as_hex")] Vector<u8, N>);
 
-impl<const N: usize> TryFrom<&[u8]> for ByteVector<N> {
+pub struct Bytes48 {
+    bytes: [u8; 48usize],
+}
+
+impl<const N: usize> TryFrom<Bytes48> for ByteVector<N> {
     type Error = ssz_rs::DeserializeError;
 
-    fn try_from(bytes: &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(bytes: Bytes48) -> Result<Self, Self::Error> {
+        // convert to bytes to &[u8]
+        let bytes = &bytes.bytes[..];
         ByteVector::<N>::deserialize(bytes)
     }
 }
 
-impl<const N: usize> TryFrom<&mut &[u8]> for ByteVector<N> {
+impl<const N: usize> TryFrom<&[u8]> for ByteVector<N> {
     type Error = ssz_rs::DeserializeError;
 
-    fn try_from(bytes: &mut &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(bytes: &[u8]) -> Result<Self, Self::Error> {
         ByteVector::<N>::deserialize(bytes)
     }
 }
