@@ -18,6 +18,14 @@ impl<const N: usize> TryFrom<&[u8]> for ByteVector<N> {
     }
 }
 
+impl<const N: usize> TryFrom<&mut &[u8]> for ByteVector<N> {
+    type Error = ssz_rs::DeserializeError;
+
+    fn try_from(bytes: &mut &[u8]) -> Result<Self, Self::Error> {
+        ByteVector::<N>::deserialize(bytes)
+    }
+}
+
 impl<const N: usize> Hash for ByteVector<N> {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.as_ref().hash(state);

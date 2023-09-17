@@ -49,7 +49,7 @@ pub mod presets {
             phase0::BeaconState,
             phase0::SignedAggregateAndProof,
             phase0::SignedBeaconBlock,
-            deneb::BlobSidecar,
+            deneb::Blob,
             altair::LightClientBootstrap,
             altair::LightClientUpdate,
             altair::LightClientFinalityUpdate,
